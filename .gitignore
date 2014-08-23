@@ -1,36 +1,13 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# Build and Release Folders
+export/
 
-# Folder config file
-Desktop.ini
+# Other files and folders
+.settings/
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# SublimeText workspace
+*.sublime-workspace
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Icon must ends with two \r.
-Icon
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
+# According to GitHub:
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.
