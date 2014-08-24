@@ -1,6 +1,7 @@
 package spacetaxi;
 
 import flash.Lib;
+import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 

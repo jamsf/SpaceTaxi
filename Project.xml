@@ -32,6 +32,15 @@
 	<!--You can use rename="newName" to shorten the paths to individual subdirectories!-->
 	<assets path="assets" />
 	
+	<assets path="assets/music" if="windows" >
+		<music path="BloopFM.ogg" id="bloopfm" />
+		<music path="EarthClassics.ogg" id="earthclassics" />
+	</assets>
+	<assets path="assets/music" if="flash" >
+		<music path="BloopFM.mp3" id="bloopfm" />
+		<music path="EarthClassics.mp3" id="earthclassics" />
+	</assets>
+	
 	<!--------------------------------LIBRARIES------------------------------------->
 	
 	<haxelib name="openfl" />
@@ -44,12 +53,12 @@
 	<!--<haxelib name="flixel-ui"/>-->
 	
 	<!--In case you want to use nape with flixel-->
-	<!--<haxelib name="nape" />-->
+	<haxelib name="nape" />
 	
 	<!---------------------------------HAXEDEFINES---------------------------------->
 	
 	<!--Enable this for nape release builds for a serious peformance improvement-->
-	<!--<haxedef name="NAPE_RELEASE_BUILD" />--> 
+	<haxedef name="NAPE_RELEASE_BUILD" /> 
 	
 	<!--Enable the flixel core recording system-->
 	<!--<haxedef name="FLX_RECORD" />-->

@@ -5,6 +5,8 @@ import flixel.FlxSprite;
 import flixel.math.FlxVelocity;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
+import flixel.addons.nape.FlxNapeSprite;
+import nape.geom.Vec2;
 
 import spacetaxi.utils.AssetDataUtil;
 import spacetaxi.utils.MathHelpers;
@@ -13,14 +15,23 @@ import spacetaxi.utils.MathHelpers;
  * ...
  * @author Jams
  */
-class Taxi extends FlxSprite
+class Taxi extends FlxNapeSprite
 {
 
 	public function new(X:Float=0, Y:Float=0) 
 	{
 		super(X, Y);
-		loadGraphic(AssetDataUtil.TAXI, false, 64, 32);
-		drag.set(100, 100);
+		loadGraphic(AssetDataUtil.TAXI_VAC, false, 50, 28);
+		
+		// Taxi Physics
+		drag.set(200, 200);
+		maxVelocity.set(MAX_VELOCITY, MAX_VELOCITY);
+		createRectangularBody(width, height);
+		antialiasing = true;
+		setBodyMaterial(0.5, 0.5, 4, 2);
+		setDrag(0.98, 1);
+		
+		occupied = false;
 	}
 	
 	override public function update():Void 
@@ -29,33 +40,43 @@ class Taxi extends FlxSprite
 		updateMovement();
 	}
 	
-	private function updateMovement():Void
+	public function pickupRide():Void
 	{
-		angularVelocity = 0;
+		occupied = true;
+	}
+	
+	private function updateMovement():Void
+	{	
+		// Resolve rotation
+		if (body.rotation > Math.PI)
+			body.rotation = -Math.PI + (body.rotation - Math.PI);
+		else if (body.rotation < -Math.PI)
+			body.rotation = Math.PI - (body.rotation+Math.PI);
 		
+		body.angularVel += body.angularVel > 0 ? -0.05 : 0.05;
+			
 		if (FlxG.keys.pressed.D || FlxG.keys.pressed.RIGHT)
 		{
-			angularVelocity += 240;
+			body.angularVel += 0.1;
 		}
 		if (FlxG.keys.pressed.A || FlxG.keys.pressed.LEFT)
 		{
-			angularVelocity -= 240;
+			body.angularVel -= 0.1;
 		}
-		angle = FlxAngle.wrapAngle(angle);
-		
-		acceleration.set();
 		
 		if (FlxG.keys.pressed.W || FlxG.keys.pressed.UP)
 		{
-			var convertedAngle : Float = angle < 0 ? -angle : 360 - angle;
-			convertedAngle = convertedAngle % 360;
-			MathHelpers.rotatePoint(200, 0, 0, 0, convertedAngle, acceleration);
+			body.applyImpulse(new Vec2(Math.cos(body.rotation)*20, Math.sin(body.rotation)*20));
 		}
 		if (FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN)
 		{
-			var convertedAngle : Float = angle < 0 ? -angle : 360-angle;
-			convertedAngle = (angle + 180) % 360;
-			MathHelpers.rotatePoint(200, 0, 0, 0, convertedAngle, acceleration);
+			body.applyImpulse(new Vec2(Math.cos(body.rotation + Math.PI)*20, Math.sin(body.rotation + Math.PI)*20));
 		}
 	}
+	
+	private var occupied : Bool;
+	
+	// Space boundaries
+	static var MAX_VELOCITY : Float = 400;
+	static var MAX_RAD : Float = 2 * Math.PI;
 }
