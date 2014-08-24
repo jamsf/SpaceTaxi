@@ -36,11 +36,22 @@
 		<music path="BloopFM.ogg" id="bloopfm" />
 		<music path="EarthClassics.ogg" id="earthclassics" />
 		<music path="GPR.ogg" id="gpr" />
+		<music path="Title.ogg" id="title" />
 	</assets>
 	<assets path="assets/music" if="flash" >
 		<music path="BloopFM.mp3" id="bloopfm" />
 		<music path="EarthClassics.mp3" id="earthclassics" />
 		<music path="GPR.mp3" id="gpr" />
+		<music path="Title.mp3" id="title" />
+	</assets>
+	
+	<assets path="assets/sounds" if="flash" >
+		<sound path="entercar.mp3" id="entercar" />
+		<sound path="spaceship.mp3" id="spaceship" />
+	</assets>
+	<assets path="assets/sounds" if="windows" >
+		<sound path="entercar.ogg" id="entercar" />
+		<sound path="spaceship.ogg" id="spaceship" />
 	</assets>
 	
 	<!--------------------------------LIBRARIES------------------------------------->

@@ -16,9 +16,10 @@ class TaxiUpdateHUD extends FlxText
 
 	public function new(taxi:Taxi) 
 	{
-		super(0, 0, 0, "", 12, true);
+		super(0, 0, 0, "", 16, true);
 		
 		color = 0xFFFFFF;
+		alignment = FlxTextAlign.CENTER;
 		_taxiTimer = null;
 		_taxi = taxi;
 	}

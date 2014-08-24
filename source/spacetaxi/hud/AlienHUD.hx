@@ -39,6 +39,7 @@ class AlienHUD
 		FlxG.state.add(_alienText);
 		
 		_alienTrip = false;
+		_alienTalking = false;
 	}
 	
 	public function updateHud():Void
@@ -51,24 +52,59 @@ class AlienHUD
 		_alienTrip = true;
 		_alienPortrait.loadGraphic(getRandomAlienPortrait());
 		_alienPortrait.alpha = 1;
-		alienSays(startStr);
+		alienSays(startStr, true);
+		_alienObjective = startStr;
+		_alienRemindTimer = new FlxTimer(20, remindCallback);
+	}
+	
+	public function remindCallback(timer:FlxTimer):Void
+	{
+		alienSays(_alienObjective, true);
 	}
 	
 	public function endAlien(success:Bool):Void
 	{
+		if (_alienRemindTimer != null)
+			_alienRemindTimer.cancel();
 		_alienTrip = false;
 		if (success)
-			alienSays("Thanks for the ride! Here's some money!");
+			alienSays("Thanks for the ride! Here's some money!", true);
 		else
-			alienSays("This is taking forever, I'm getting out.");
+			alienSays("This is taking forever, I'm getting out.", true);
 	}
 	
-	public function alienSays(str:String):Void
+	public function alienSays(str:String, force:Bool=false):Void
 	{
-		_alienSpeechBubble.alpha = 1;
-		_alienText.resetText(str);
-		_alienText.alpha = 1;
-		_alienText.start(0.04, false, true, null, null, onAlienSaysComplete, ["Fully typed"]);
+		if (force || (_alienTrip && !_alienTalking))
+		{
+			_alienSpeechBubble.alpha = 1;
+			_alienText.resetText(str);
+			_alienText.alpha = 1;
+			_alienText.start(0.04, false, true, null, null, onAlienSaysComplete, ["Fully typed"]);
+			_alienTalking = true;
+		}
+	}
+	
+	public function alienAngryAtAsteroid():Void
+	{
+		var rand : Int = new FlxRandom().int(0, 6);
+		switch(rand)
+		{
+			case 0:
+				alienSays("Hey, watch out for that Asteroid!");
+			case 1:
+				alienSays("Watch where you're flying!");
+			case 2:
+				alienSays("Be careful you dummy!!");
+			case 3:
+				alienSays("You almost got us killed!");
+			case 4:
+				alienSays("What are you even doing?");
+			case 5:
+				alienSays("How are you driving so poorly?");
+			case 6:
+				alienSays("Stop being so reckless!");
+		}
 	}
 	
 	private function onAlienSaysComplete(Text:String):Void
@@ -82,6 +118,7 @@ class AlienHUD
 		_alienText.alpha = 0;
 		if (!_alienTrip)
 			_alienPortrait.alpha = 0;
+		_alienTalking = false;
 	}
 	
 	private function getRandomAlienPortrait():String
@@ -89,6 +126,10 @@ class AlienHUD
 		return AssetDataUtil.ALIEN_PORTRAIT_RAND + Std.string(Std.int(Math.random() * 8)) + ".png";
 	}
 	
+	private var _alienObjective:String;
+	private var _alienRemindTimer:FlxTimer;
+	
+	private var _alienTalking : Bool;
 	private var _alienPortrait:FlxSprite;
 	private var _alienSpeechBubble:FlxSprite;
 	private var _alienText:FlxTypeText;

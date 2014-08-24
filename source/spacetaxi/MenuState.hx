@@ -8,7 +8,11 @@ import flixel.text.FlxText;
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.util.FlxColor;
 import flixel.ui.FlxButton;
+
+import spacetaxi.states.ControlsState;
 import spacetaxi.states.SpaceState;
+import spacetaxi.utils.AssetDataUtil;
+
 
 /**
  * A FlxState which can be used for the game's menu.
@@ -22,14 +26,21 @@ class MenuState extends FlxState
 	{
 		super.create();
 		
-		_titleText = new FlxText(0, 0, 500); // x, y, width
-		_titleText.text = "Space Taxi";
-		_titleText.size = 20;
-		_titleText.color = FlxColor.YELLOW;
-		_titleText.alignment = "center";
-		_titleText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.RED, 1);
+		FlxG.mouse.visible = false;
 		
-		add(_titleText);
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+		FlxG.sound.playMusic("title");
+		
+		_titleImage = new FlxSprite(0, 0, AssetDataUtil.TITLE);
+		_titleImage.scrollFactor.set(0, 0);
+		
+		_creditImage = new FlxSprite(0, 0, AssetDataUtil.CREDITS);
+		_creditImage.scrollFactor.set(0, 0);
+		_creditImage.alpha = 0;
+		
+		add(_titleImage);
+		add(_creditImage);
 	}
 
 	/**
@@ -48,9 +59,17 @@ class MenuState extends FlxState
 	{
 		super.update();
 		
-		if (FlxG.keys.justPressed.ENTER || FlxG.keys.justPressed.SPACE)
-			FlxG.switchState(new SpaceState());
+		if (FlxG.keys.justPressed.C)
+		{
+			_lookingAtCredits = !_lookingAtCredits;
+			_creditImage.alpha = _creditImage.alpha == 0 ? 1 : 0;
+		}
+			
+		if (!_lookingAtCredits && FlxG.keys.justPressed.ENTER)
+			FlxG.switchState(new ControlsState());
 	}
 	
-	private var _titleText : FlxText;
+	private var _lookingAtCredits:Bool;
+	private var _creditImage : FlxSprite;
+	private var _titleImage : FlxSprite;
 }

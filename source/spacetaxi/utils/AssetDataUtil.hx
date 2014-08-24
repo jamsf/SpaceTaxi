@@ -38,6 +38,13 @@ class AssetDataUtil
 	
 	public inline static var ALIEN_PORTRAIT_RAND : String = "assets/images/alien";
 	
+	public inline static var MAP : String = "assets/images/map.png";
+	public inline static var TITLE : String = "assets/images/title.png";
+	public inline static var CONTROLS : String = "assets/images/controls.png";
+	public inline static var CREDITS : String = "assets/images/credits.png";
+	
+	public inline static var ASTEROID : String = "assets/images/asteroid.png";
+	
 	//-------------------------------------------------
 	// MUSIC
 	//-------------------------------------------------

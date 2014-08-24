@@ -14,6 +14,7 @@ import flixel.util.FlxCollision;
 import flixel.addons.nape.FlxNapeState;
 import flixel.util.FlxTimer;
 import flixel.math.FlxRandom;
+import spacetaxi.entities.Asteroid;
 import spacetaxi.hud.TaxiUpdateHUD;
 
 import spacetaxi.entities.Planet;
@@ -39,6 +40,9 @@ class SpaceState extends FlxNapeState
 	{
 		super.create();
 		
+		if (FlxG.sound.music != null)
+			FlxG.sound.music.stop();
+		
 		// Set space boundries
 		LEVEL_MIN_X = 0;
 		LEVEL_MAX_X = FlxG.width * 8;
@@ -57,9 +61,7 @@ class SpaceState extends FlxNapeState
 		
 		// Add Smaller Entites
 		_taxi = new Taxi(LEVEL_MAX_X * 0.5, LEVEL_MAX_Y * 0.5);
-		_testColl = new FlxNapeSprite(LEVEL_MAX_X * 0.5 + 300, LEVEL_MAX_Y * 0.5 + 300, AssetDataUtil.TAXI_OCC, true, true);
 		add(_taxi);
-		add(_testColl);
 		
 		_gameTimer = new FlxTimer(8*60, gameOver);
 		
@@ -79,6 +81,22 @@ class SpaceState extends FlxNapeState
 		_planets.push(new Planet(3397, 1241, 300, AssetDataUtil.PLANET300_5, 10));
 		_planets.push(new Planet(2228, 3065, 300, AssetDataUtil.PLANET300_6, 11));
 		
+		// Add Asteroids
+		_asteroids = new FlxGroup();
+		_asteroids.add(new Asteroid(1240, 400));
+		_asteroids.add(new Asteroid(400, 890));
+		_asteroids.add(new Asteroid(450, 2257));
+		_asteroids.add(new Asteroid(1200, 3300));
+		_asteroids.add(new Asteroid(3113, 3385));
+		_asteroids.add(new Asteroid(4329, 2652));
+		_asteroids.add(new Asteroid(3769, 1609));
+		_asteroids.add(new Asteroid(4761, 710));
+		_asteroids.add(new Asteroid(2800, 900));
+		_asteroids.add(new Asteroid(4697, 200));
+		_asteroids.add(new Asteroid(1937, 2449));
+		_asteroids.add(new Asteroid(2737, 800));
+		add(_asteroids);
+		
 		for (planet in _planets)
 		{
 			add(planet);
@@ -89,7 +107,7 @@ class SpaceState extends FlxNapeState
 		
 		_cabHud = new CabHUD(_gameTimer, 0);
 		_taxiUpdateHud = new TaxiUpdateHUD(_taxi);
-		_taxiUpdateHud.setText("Lets do it!", 2.0);
+		_taxiUpdateHud.setText("Let's do it!", 2.0);
 		add(_taxiUpdateHud);
 		
 		_map = new FlxSprite(FlxG.camera.x, FlxG.camera.y, AssetDataUtil.MAP);
@@ -109,34 +127,34 @@ class SpaceState extends FlxNapeState
 		
 		if (!_occupiedTaxi)
 		{
-			
-				for (planet in _planets)
+			for (planet in _planets)
+			{
+				if (planet.Status == PlanetStatus.NEEDRIDE)
 				{
-					if (planet.Status == PlanetStatus.NEEDRIDE)
+					if (FlxCollision.pixelPerfectCheck(_taxi, planet.LandingZone, -10))
 					{
-						if (FlxCollision.pixelPerfectCheck(_taxi, planet.LandingZone, -10))
+						// Only check pickup if taxi is going slow
+						if (Math.abs(_taxi.body.velocity.x) < 80 && Math.abs(_taxi.body.velocity.y) < 80)
 						{
-							// Only check pickup if taxi is going slow
-							if (_taxi.body.velocity.x < 0.5 && _taxi.body.velocity.y < 0.5)
-							{
-								_taxiUpdateHud.setText("SLOW DOWN", 2.0);
-							}
-							else
-							{
-								initializeRide(planet);
-								_cabHud.AlienHud.newAlien(Planet.GetPlanetDirection(_destinationPlanet.PlanetId));
-								break;
-							}
+							FlxG.sound.play("entercar", 1, false);
+							initializeRide(planet);
+							_cabHud.AlienHud.newAlien(Planet.GetPlanetDirection(_destinationPlanet.PlanetId));
+							break;
+						}
+						else
+						{
+							_taxiUpdateHud.setText("SLOW DOWN", 2.0);
 						}
 					}
 				}
+			}
 		}
 		else
 		{
 			// Only check pickup if taxi is going slow
-			if (_taxi.body.velocity.x < 0.5 && _taxi.body.velocity.y < 0.5)
+			if (Math.abs(_taxi.body.velocity.x) < 80 && Math.abs(_taxi.body.velocity.y) < 80)
 			{
-				if (FlxCollision.pixelPerfectCheck(_taxi, _destinationPlanet.LandingZone, -10))
+				if (FlxCollision.pixelPerfectCheck(_taxi, _destinationPlanet.LandingZone))
 				{
 					endRide(true);
 					_rideTimer.cancel();
@@ -146,12 +164,18 @@ class SpaceState extends FlxNapeState
 			}
 		}
 		
+		if (_occupiedTaxi)
+		{
+			for (asteroid in _asteroids)
+			{
+				if (FlxCollision.pixelPerfectCheck(_taxi, cast(asteroid, Asteroid)))
+					_cabHud.AlienHud.alienAngryAtAsteroid();
+			}
+		}
+		
 		// Toggle Map
 		if (FlxG.keys.justPressed.M)
-			_map.alpha = _map.alpha == 0 ? 0.5 : 0;
-		
-		if (FlxG.collide(_taxi, _testColl))
-			trace("COLLISION!");
+			_map.alpha = _map.alpha == 0 ? 0.75 : 0;
 	}
 	
 	public function lateRideCallback(timer:FlxTimer):Void
@@ -238,7 +262,6 @@ class SpaceState extends FlxNapeState
 	}
 	
 	private var _taxi : Taxi;
-	private var _testColl : FlxNapeSprite;
 	private var _map : FlxSprite;
 	
 	private var _rideTimer : FlxTimer;
@@ -250,10 +273,10 @@ class SpaceState extends FlxNapeState
 	private var _taxiUpdateHud : TaxiUpdateHUD;
 	
 	private var _planets : Array<Planet>;
+	private var _asteroids : FlxGroup;
 	
 	private var _occupiedTaxi : Bool;
 	private var _destinationPlanet : Planet;
-	
 	
 	// Space boundaries
 	static var LEVEL_MIN_X;

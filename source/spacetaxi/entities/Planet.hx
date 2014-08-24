@@ -88,29 +88,29 @@ class Planet extends FlxNapeSprite
 		switch(id)
 		{
 			case 0:
-				return "Please take me to the Sand Planet.";
+				return "Please take me to Planet Hot 'n Sandy.";
 			case 1:
 				return "Take me to the Red Hot Planet.";
 			case 2:
-				return "I need to get to Turquoise Planet.";
+				return "I need to get to Planet Toxic - quick!";
 			case 3:
-				return "I gotta get to a hot date on the Dark Pink Love Planet.";
+				return "I gotta get to a hot date on the Love Planet.";
 			case 4:
-				return "Please get me to Grey Scratchy Planet.";
+				return "Can you get me to Tiny Gray Planet?";
 			case 5:
-				return "I need to get to Light Purple Planet for a fun party.";
+				return "Party on Little Lavendar! Get me there on time.";
 			case 6:
-				return "I have to get to Nearly Black Planet.";
+				return "I have a meeting on the Big Dumb Rock Planet.";
 			case 7:
-				return "Gotta go to Water World, on the double!";
+				return "Bring me to Dark Blue Rock Planet.";
 			case 8:
-				return "Take me to Yellow Piss Planet please.";
+				return "Planet Mustard. Now. NOW!";
 			case 9:
-				return "I'm heading to Magic Purple Planet please.";
+				return "I have business to attend to on Magic Purple Planet.";
 			case 10:
-				return "Please bring me to Light Turquoise Mold Planet please.";
+				return "Planet Mold awaits me.";
 			case 11:
-				return "I need to get to Dumb Blue Rock Planet.";
+				return "Get me to Light Blue Rock Planet.";
 		}
 		return "Just take me to some fucking planet.";
 	}

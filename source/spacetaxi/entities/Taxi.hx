@@ -6,7 +6,9 @@ import flixel.math.FlxVelocity;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.addons.nape.FlxNapeSprite;
+import flixel.util.FlxSpriteUtil;
 import nape.geom.Vec2;
+import flixel.system.FlxSound;
 
 import spacetaxi.utils.AssetDataUtil;
 import spacetaxi.utils.MathHelpers;
@@ -30,6 +32,11 @@ class Taxi extends FlxNapeSprite
 		antialiasing = true;
 		setBodyMaterial(0.5, 0.5, 4, 2);
 		setDrag(0.98, 1);
+		
+		_spaceshipSound = new FlxSound();
+		_spaceshipSound.loadEmbedded("spaceship", true);
+		_spaceshipSound.volume = 0.25;
+		_spaceshipSound.looped = true;
 		
 		occupied = false;
 	}
@@ -64,17 +71,27 @@ class Taxi extends FlxNapeSprite
 			body.angularVel -= 0.1;
 		}
 		
-		if (FlxG.keys.pressed.W || FlxG.keys.pressed.UP)
+		if (FlxG.keys.pressed.W || FlxG.keys.pressed.UP || FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN)
 		{
-			body.applyImpulse(new Vec2(Math.cos(body.rotation)*20, Math.sin(body.rotation)*20));
+			if (FlxG.keys.pressed.W || FlxG.keys.pressed.UP)
+			{
+				body.applyImpulse(new Vec2(Math.cos(body.rotation)*20, Math.sin(body.rotation)*20));
+			}
+			if (FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN)
+			{
+				body.applyImpulse(new Vec2(Math.cos(body.rotation + Math.PI)*20, Math.sin(body.rotation + Math.PI)*20));
+			}
+			if (!_spaceshipSound.playing)
+				_spaceshipSound.play(true);
 		}
-		if (FlxG.keys.pressed.S || FlxG.keys.pressed.DOWN)
+		else
 		{
-			body.applyImpulse(new Vec2(Math.cos(body.rotation + Math.PI)*20, Math.sin(body.rotation + Math.PI)*20));
+			_spaceshipSound.stop();
 		}
 	}
 	
 	private var occupied : Bool;
+	private var _spaceshipSound : FlxSound;
 	
 	// Space boundaries
 	static var MAX_VELOCITY : Float = 400;
