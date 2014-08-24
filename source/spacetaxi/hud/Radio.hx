@@ -12,8 +12,8 @@ class Radio
 {
 	public function new() 
 	{
-		_fancyTrackNames = ["Bloop FM", "Earth Classics"];
-		_trackNames = ["bloopfm", "earthclassics"];
+		_fancyTrackNames = ["Bloop FM", "Earth Classics", "Galactic Public Radio"];
+		_trackNames = ["bloopfm", "earthclassics", "gpr"];
 		_tracks = new Array<FlxSound>();
 		
 		for (trackName in _trackNames)
@@ -41,6 +41,14 @@ class Radio
 			_trackChangeTimeout = new FlxTimer(1, trackChangeTimeout);
 		}
 		return _fancyTrackNames[_currentTrack];
+	}
+	
+	public function stopAllMusic():Void
+	{
+		for (track in _tracks)
+		{
+			track.stop();
+		}
 	}
 	
 	private function trackChangeTimeout(timer:FlxTimer):Void

@@ -35,10 +35,12 @@
 	<assets path="assets/music" if="windows" >
 		<music path="BloopFM.ogg" id="bloopfm" />
 		<music path="EarthClassics.ogg" id="earthclassics" />
+		<music path="GPR.ogg" id="gpr" />
 	</assets>
 	<assets path="assets/music" if="flash" >
 		<music path="BloopFM.mp3" id="bloopfm" />
 		<music path="EarthClassics.mp3" id="earthclassics" />
+		<music path="GPR.mp3" id="gpr" />
 	</assets>
 	
 	<!--------------------------------LIBRARIES------------------------------------->

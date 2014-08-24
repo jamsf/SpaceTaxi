@@ -7,6 +7,7 @@ import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import spacetaxi.entities.Taxi;
 
 import spacetaxi.utils.AssetDataUtil;
 import spacetaxi.hud.Radio;
@@ -53,9 +54,10 @@ class CabHUD
 	public function updateHUD():Void
 	{
 		var sec : Int = Math.floor(_gameTimer.timeLeft);
-		var min : Int = Math.floor(sec / 60);
+		var minStr : String = Std.string(Math.floor(sec / 60));
 		sec = sec % 60;
-		_gameTimerText.text = "TAXI TIME " + Std.string(min) + ":" + Std.string(sec);
+		var secStr = sec < 10 ? "0" + Std.string(sec) : Std.string(sec);
+		_gameTimerText.text = "TAXI TIME " + minStr + ":" + secStr;
 		
 		
 		if (FlxG.keys.justPressed.SPACE)
@@ -71,6 +73,11 @@ class CabHUD
 			_moneyCounting += 1;
 			_moneyText.text = "$ " + Std.string(_moneyCounting);
 		}
+	}
+	
+	public function stopAllMusic():Void
+	{
+		_radio.stopAllMusic();
 	}
 	
 	public function updateMoney(money:Int)

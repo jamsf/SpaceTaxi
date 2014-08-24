@@ -27,7 +27,7 @@ class AlienHUD
 		_alienPortrait.alpha = 0;
 		_alienPortrait.scrollFactor.set(0, 0);
 		
-		_alienText = new FlxTypeText(FlxG.camera.x + 100 + (MARGIN*4), FlxG.camera.y + FlxG.camera.height - 100, 180, "", 16);
+		_alienText = new FlxTypeText(FlxG.camera.x + 100 + (MARGIN*4), FlxG.camera.y + FlxG.camera.height - 100, 160, "", 16);
 		_alienText.color = FlxColor.BLACK;
 		_alienText.waitTime = 4.0;
 		_alienText.setTypingVariation(0.75, true);
@@ -54,10 +54,13 @@ class AlienHUD
 		alienSays(startStr);
 	}
 	
-	public function endAlien():Void
+	public function endAlien(success:Bool):Void
 	{
 		_alienTrip = false;
-		alienSays("Thanks for the ride!");
+		if (success)
+			alienSays("Thanks for the ride! Here's some money!");
+		else
+			alienSays("This is taking forever, I'm getting out.");
 	}
 	
 	public function alienSays(str:String):Void
