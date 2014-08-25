@@ -34,6 +34,8 @@ class AlienHUD
 		_alienText.scrollFactor.set(0, 0);
 		_alienText.delay = 0.1;
 		
+		_queuedAlienSay = new Array<String>();
+		
 		FlxG.state.add(_alienPortrait);
 		FlxG.state.add(_alienSpeechBubble);
 		FlxG.state.add(_alienText);
@@ -77,6 +79,8 @@ class AlienHUD
 	{
 		if (force || (_alienTrip && !_alienTalking))
 		{
+			if (_eraseTimer != null)
+				_eraseTimer.cancel();
 			_alienSpeechBubble.alpha = 1;
 			_alienText.resetText(str);
 			_alienText.alpha = 1;
@@ -126,6 +130,7 @@ class AlienHUD
 		return AssetDataUtil.ALIEN_PORTRAIT_RAND + Std.string(Std.int(Math.random() * 8)) + ".png";
 	}
 	
+	private var _queuedAlienSay:Array<String>;
 	private var _alienObjective:String;
 	private var _alienRemindTimer:FlxTimer;
 	

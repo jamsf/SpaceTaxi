@@ -10,13 +10,16 @@
 	<!--The swf version should be at least 11.2 without FLX_NO_MOUSE_ADVANCED -->
 	<set name="SWF_VERSION" value="11.9" />
 	
+	<icon path="assets/images/icon_32.png" size="32" />
+	<icon path="assets/images/icon_64.png" width="64" height="64" />
+	
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
 	<window width="800" height="600" fps="60" background="#000000" hardware="true" vsync="true" />
 	
 	<!--Web-specific-->
-	<window if="web"		orientation="portrait"  />
+	<window if="web" orientation="portrait"  resizable="false" />
 	
 	<!--Desktop-specific-->
 	<window if="desktop"	orientation="landscape" fullscreen="false" resizable="true" />
@@ -38,6 +41,16 @@
 		<music path="GPR.ogg" id="gpr" />
 		<music path="Title.ogg" id="title" />
 	</assets>
+	
+	<assets path="assets/sounds" if="windows" >
+		<sound path="entercar.ogg" id="entercar" />
+		<sound path="spaceship.ogg" id="spaceship" />
+		<sound path="succeed.ogg" id="succeed" />
+		<sound path="fail.ogg" id="fail" />
+		<sound path="radiotune.ogg" id="radiotune" />
+		<sound path="timesup.ogg" id="timesup" />
+	</assets>
+	
 	<assets path="assets/music" if="flash" >
 		<music path="BloopFM.mp3" id="bloopfm" />
 		<music path="EarthClassics.mp3" id="earthclassics" />
@@ -48,10 +61,10 @@
 	<assets path="assets/sounds" if="flash" >
 		<sound path="entercar.mp3" id="entercar" />
 		<sound path="spaceship.mp3" id="spaceship" />
-	</assets>
-	<assets path="assets/sounds" if="windows" >
-		<sound path="entercar.ogg" id="entercar" />
-		<sound path="spaceship.ogg" id="spaceship" />
+		<sound path="succeed.mp3" id="succeed" />
+		<sound path="fail.mp3" id="fail" />
+		<sound path="radiotune.mp3" id="radiotune" />
+		<sound path="timesup.mp3" id="timesup" />
 	</assets>
 	
 	<!--------------------------------LIBRARIES------------------------------------->

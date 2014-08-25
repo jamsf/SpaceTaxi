@@ -33,10 +33,12 @@ class Radio
 	{
 		if (!_trackChangeWait)
 		{
+			FlxG.sound.play("radiotune");
 			_tracks[_currentTrack].pause();
 			var duration : Float = _tracks[_currentTrack].time;
 			_currentTrack = _currentTrack >= _trackNames.length - 1 ? 0 : _currentTrack + 1;
 			_tracks[_currentTrack].startSound(duration);
+			_tracks[_currentTrack].volume = 0;
 			_trackChangeWait = true;
 			_trackChangeTimeout = new FlxTimer(1, trackChangeTimeout);
 		}
@@ -53,6 +55,7 @@ class Radio
 	
 	private function trackChangeTimeout(timer:FlxTimer):Void
 	{
+		_tracks[_currentTrack].volume = 1;
 		_trackChangeWait = false;
 	}
 	

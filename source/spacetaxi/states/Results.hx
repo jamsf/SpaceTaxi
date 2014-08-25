@@ -27,6 +27,7 @@ class Results extends FlxState
 		super.create();
 		
 		FlxG.camera.setPosition(0, 0);
+		FlxG.sound.pause();
 		
 		_finishShowingResults = false;
 		
@@ -63,7 +64,7 @@ class Results extends FlxState
 		_gradeText.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.YELLOW, 1);
 		_gradeText.alpha = 0;
 		
-		_continueText = new FlxText(FlxG.camera.x + (FlxG.camera.width*0.5) - 100, FlxG.camera.y + FlxG.camera.height - 20, 200, "Press ENTER to Continue", 12);
+		_continueText = new FlxText(FlxG.camera.x + (FlxG.camera.width*0.5) - 100, FlxG.camera.y + FlxG.camera.height - 20, 400, "Press ENTER to Continue", 12);
 		_continueText.color = FlxColor.WHITE;
 		_continueText.alignment = FlxTextAlign.CENTER;
 		_continueText.alpha = 0;
@@ -79,18 +80,21 @@ class Results extends FlxState
 	
 	private function showRides(timer:FlxTimer):Void
 	{
+		FlxG.sound.play("succeed");
 		_rideText.alpha = 1;
 		new FlxTimer(1.0, showMoney);
 	}
 	
 	private function showMoney(timer:FlxTimer):Void
 	{
+		FlxG.sound.play("succeed");
 		_moneyText.alpha = 1;
 		new FlxTimer(1.0, showGrade);
 	}
 	
 	private function showGrade(timer:FlxTimer):Void
 	{
+		FlxG.sound.play("succeed");
 		_gradeText.alpha = 1;
 		new FlxTimer(1.0, showContinue);
 	}
@@ -106,7 +110,7 @@ class Results extends FlxState
 	{
 		super.update();
 		
-		if (_finishShowingResults && FlxG.keys.justPressed.SPACE)
+		if (_finishShowingResults && (FlxG.keys.justPressed.SPACE || FlxG.keys.justPressed.ENTER))
 			FlxG.switchState(new MenuState());
 	}
 	

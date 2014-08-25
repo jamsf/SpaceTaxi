@@ -63,7 +63,7 @@ class SpaceState extends FlxNapeState
 		_taxi = new Taxi(LEVEL_MAX_X * 0.5, LEVEL_MAX_Y * 0.5);
 		add(_taxi);
 		
-		_gameTimer = new FlxTimer(8*60, gameOver);
+		_gameTimer = new FlxTimer(60*8, gameOver);
 		
 		// Add Planets
 		_planets = new Array<Planet>();
@@ -232,6 +232,7 @@ class SpaceState extends FlxNapeState
 		ridesAvailable();
 		if (success)
 		{
+			FlxG.sound.play("succeed", 1, false);
 			_taxiUpdateHud.setText("SUCCESS!", 2.0, 0x74903c);
 			_money += 200;
 			_rideCount += 1;
@@ -239,6 +240,7 @@ class SpaceState extends FlxNapeState
 		}
 		else
 		{
+			FlxG.sound.play("fail", 1, false);
 			_taxiUpdateHud.setText("TOO LATE!", 2.0, 0x700014);
 		}
 		_cabHud.AlienHud.endAlien(success);
@@ -246,6 +248,7 @@ class SpaceState extends FlxNapeState
 	
 	private function gameOver(timer:FlxTimer):Void
 	{
+		FlxG.sound.play("timesup");
 		var gameOverText : FlxText = new FlxText(FlxG.camera.x + FlxG.camera.width * 0.5 - 250, FlxG.camera.y + FlxG.camera.height * 0.5 - 100, 400, "TIME'S UP!", 48);
 		gameOverText.color = 0x3c9850;
 		gameOverText.alignment = FlxTextAlign.CENTER;
